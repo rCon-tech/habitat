@@ -5,8 +5,8 @@ import { UserMenu } from '@/components/UserMenu';
 
 export function SiteHeader({ user }: { user: CurrentUser }) {
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
+    <header className="sticky top-0 z-30 bg-background/85 backdrop-blur">
+      <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
         <Logo />
         <div className="flex items-center gap-1">
           <NotificationBell />

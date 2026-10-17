@@ -6,15 +6,16 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { HabitatSwitcher } from '@/components/HabitatSwitcher';
+import { Logo, LogoMark } from '@/components/Logo';
 import { ModuleIcon } from '@/components/ModuleIcon';
 import { NotificationBell } from '@/components/NotificationBell';
 import { UserMenu } from '@/components/UserMenu';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { apiFetch } from '@/lib/api-client';
+import type { Role } from '@/lib/permissions';
 import type { ProposalDTO } from '@/lib/proposals';
 import { cn } from '@/lib/utils';
 import { isAdmin, useHabitat } from '@/modules/sdk/context';
-import type { Role } from '@/lib/permissions';
 
 interface NavItem {
   href: string;
@@ -88,87 +89,134 @@ export function HabitatShell({
   const rest = items.slice(4);
   const moreActive = rest.some(active);
 
-  const link = (i: NavItem, mobile = false) => (
+  const sideLink = (i: NavItem) => (
     <Link
       key={i.href}
       href={i.href}
-      onClick={() => setMoreOpen(false)}
       aria-current={active(i) ? 'page' : undefined}
       className={cn(
-        mobile
-          ? 'relative flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-semibold'
-          : 'relative flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold',
-        active(i)
-          ? mobile
-            ? 'text-accent'
-            : 'bg-accent/15 text-ink'
-          : 'text-ink-soft hover:bg-surface-2',
+        'group relative flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-[15px] font-semibold transition',
+        active(i) ? 'bg-nav-2 text-nav-ink' : 'text-nav-soft hover:bg-white/5 hover:text-nav-ink',
       )}
     >
-      {i.icon}
+      {active(i) && (
+        <span
+          className="absolute -left-3 top-1/2 h-6 w-1.5 -translate-y-1/2 rounded-r-full bg-accent"
+          aria-hidden
+        />
+      )}
+      <span className={cn('transition', active(i) && 'text-accent')}>{i.icon}</span>
       <span>{i.label}</span>
       {!!i.badge && (
-        <span
-          className={cn(
-            'rounded-full bg-accent px-1.5 text-[10px] font-bold text-accent-ink',
-            mobile ? 'absolute right-[22%] top-1' : 'ml-auto',
-          )}
-        >
+        <span className="ml-auto rounded-full bg-accent px-2 py-0.5 text-[11px] font-extrabold text-accent-ink">
           {i.badge}
         </span>
       )}
     </Link>
   );
 
+  const tabLink = (i: NavItem, inSheet = false) => (
+    <Link
+      key={i.href}
+      href={i.href}
+      onClick={() => setMoreOpen(false)}
+      aria-current={active(i) ? 'page' : undefined}
+      className={
+        inSheet
+          ? cn(
+              'flex items-center gap-3 rounded-2xl px-3 py-3 font-semibold',
+              active(i) ? 'bg-surface-2' : 'hover:bg-surface-2',
+            )
+          : 'relative flex flex-1 flex-col items-center gap-1 pb-1.5 pt-2 text-[11px] font-semibold'
+      }
+    >
+      {inSheet ? (
+        <>
+          {i.icon}
+          <span>{i.label}</span>
+          {!!i.badge && (
+            <span className="ml-auto rounded-full bg-accent px-2 py-0.5 text-xs font-extrabold text-accent-ink">
+              {i.badge}
+            </span>
+          )}
+        </>
+      ) : (
+        <>
+          <span
+            className={cn(
+              'flex h-8 w-14 items-center justify-center rounded-full transition',
+              active(i) ? 'bg-accent text-accent-ink' : 'text-nav-soft',
+            )}
+          >
+            {i.icon}
+          </span>
+          <span className={active(i) ? 'text-nav-ink' : 'text-nav-soft'}>{i.label}</span>
+          {!!i.badge && (
+            <span className="absolute right-[18%] top-1.5 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-nav" />
+          )}
+        </>
+      )}
+    </Link>
+  );
+
   return (
-    <div className="mx-auto flex min-h-dvh max-w-6xl">
-      <aside className="sticky top-0 hidden h-dvh w-60 shrink-0 flex-col gap-1 border-r border-line p-3 md:flex">
-        <div className="mb-2 px-1">
-          <HabitatSwitcher current={habitat} />
+    <div className="mx-auto flex min-h-dvh max-w-[88rem]">
+      <aside className="sticky top-0 hidden h-dvh w-64 shrink-0 flex-col gap-4 bg-nav p-4 pl-5 text-nav-ink md:flex">
+        <div className="px-1 pt-1">
+          <Logo size="sm" className="text-nav-ink" />
         </div>
-        <nav aria-label="Habitat" className="flex flex-col gap-1">
-          {items.map((i) => link(i))}
+        <HabitatSwitcher current={habitat} tone="nav" />
+        <nav aria-label="Habitat" className="flex flex-1 flex-col gap-1 overflow-y-auto pl-3 pr-1">
+          {items.map(sideLink)}
         </nav>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-line bg-background/90 px-3 backdrop-blur">
-          <div className="md:invisible">
-            <HabitatSwitcher current={habitat} />
+        <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-3 bg-background/85 px-3 backdrop-blur md:px-6">
+          <div className="flex min-w-0 items-center gap-2 md:hidden">
+            <Link href="/" aria-label="Habitat home" className="shrink-0">
+              <LogoMark size={34} />
+            </Link>
+            <HabitatSwitcher current={habitat} tone="plain" />
           </div>
+          <div className="hidden md:block" />
           <div className="flex items-center gap-1">
             <NotificationBell />
             <UserMenu name={user.name} email={user.email} image={user.image} />
           </div>
         </header>
-        <main className="min-w-0 flex-1 px-3 py-4 pb-24 md:px-6 md:pb-8">{children}</main>
+        <main className="min-w-0 flex-1 px-3 py-3 pb-28 md:px-6 md:pb-10">{children}</main>
       </div>
 
       <nav
         aria-label="Habitat"
-        className="safe-bottom fixed inset-x-0 bottom-0 z-40 flex border-t border-line bg-background/95 backdrop-blur md:hidden"
+        className="safe-bottom fixed inset-x-2 bottom-2 z-40 flex rounded-[1.75rem] bg-nav px-1 shadow-pop md:hidden"
       >
-        {primary.map((i) => link(i, true))}
+        {primary.map((i) => tabLink(i))}
         {rest.length > 0 && (
           <button
             type="button"
             onClick={() => setMoreOpen(true)}
-            className={cn(
-              'relative flex flex-1 flex-col items-center gap-0.5 py-2 text-[11px] font-semibold',
-              moreActive ? 'text-accent' : 'text-ink-soft',
-            )}
+            className="relative flex flex-1 flex-col items-center gap-1 pb-1.5 pt-2 text-[11px] font-semibold"
           >
-            <Menu size={20} />
-            <span>More</span>
+            <span
+              className={cn(
+                'flex h-8 w-14 items-center justify-center rounded-full transition',
+                moreActive ? 'bg-accent text-accent-ink' : 'text-nav-soft',
+              )}
+            >
+              <Menu size={20} />
+            </span>
+            <span className={moreActive ? 'text-nav-ink' : 'text-nav-soft'}>More</span>
             {waiting > 0 && !primary.some((p) => p.badge) && (
-              <span className="absolute right-[22%] top-1 h-2 w-2 rounded-full bg-accent" />
+              <span className="absolute right-[18%] top-1.5 h-2.5 w-2.5 rounded-full bg-accent ring-2 ring-nav" />
             )}
           </button>
         )}
       </nav>
       <Dialog open={moreOpen} onOpenChange={setMoreOpen}>
         <DialogContent title="More">
-          <div className="flex flex-col gap-1">{rest.map((i) => link({ ...i }))}</div>
+          <div className="flex flex-col gap-1">{rest.map((i) => tabLink(i, true))}</div>
         </DialogContent>
       </Dialog>
     </div>

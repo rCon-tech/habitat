@@ -24,7 +24,7 @@ export function Widget() {
           ))}
         </ul>
       )}
-      <Link href={`/h/${slug}/m/chat`} className="inline-block text-sm font-semibold text-accent">
+      <Link href={`/h/${slug}/m/chat`} className="inline-block text-sm font-semibold text-link">
         Open chat →
       </Link>
     </Card>

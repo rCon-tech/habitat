@@ -11,7 +11,7 @@ const sandboxChromium = '/opt/pw-browsers/chromium';
 
 export const e2eEnv = {
   DATABASE_URL: DB,
-  NEXT_PUBLIC_APP_URL: `http://localhost:${PORT}`,
+  APP_URL: `http://localhost:${PORT}`,
   BETTER_AUTH_URL: `http://localhost:${PORT}`,
   BETTER_AUTH_SECRET: 'e2e-secret-e2e-secret-e2e-secret-1234',
   EMAIL_TRANSPORT: 'outbox',

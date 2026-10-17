@@ -132,7 +132,7 @@ export function Page() {
                     {b.turning ? ` · turning ${b.turning}` : ''}
                   </div>
                 </div>
-                <div className={b.inDays === 0 ? 'font-bold text-accent' : 'text-sm text-ink-soft'}>
+                <div className={b.inDays === 0 ? 'font-bold text-link' : 'text-sm text-ink-soft'}>
                   {inDaysLabel(b.inDays)}
                 </div>
               </li>

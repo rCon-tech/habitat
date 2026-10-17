@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { authClient } from '@/lib/auth-client';
 import { MemberAvatar } from '@/components/MemberAvatar';
+import { ThemeMenuItems } from '@/components/ThemeToggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,6 +37,8 @@ export function UserMenu({
             <Settings size={16} /> Account settings
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <ThemeMenuItems />
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onSelect={async () => {

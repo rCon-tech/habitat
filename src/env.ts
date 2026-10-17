@@ -28,7 +28,11 @@ export type Env = z.infer<typeof schema>;
  * else localhost. Reads process.env directly so it works without the full environment (tests, scripts).
  */
 export function appUrl(): string {
-  const v = process.env.APP_URL || process.env.NEXT_PUBLIC_APP_URL || process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+  const v =
+    process.env.APP_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.BETTER_AUTH_URL ||
+    'http://localhost:3000';
   return v.replace(/\/+$/, '');
 }
 let cached: Env | undefined;

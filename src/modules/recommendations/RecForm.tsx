@@ -101,7 +101,7 @@ export function RecForm({
                 >
                   <Star
                     size={28}
-                    className={cn(n <= rating ? 'fill-accent text-accent' : 'text-line')}
+                    className={cn(n <= rating ? 'fill-accent text-link' : 'text-line')}
                   />
                 </button>
               ))}

@@ -22,7 +22,7 @@ export function WishCard({ wish, claim }: { wish: RecordDTO; claim?: RecordDTO }
   return (
     <Card className="space-y-2">
       <div className="flex items-start gap-3">
-        <span className="mt-0.5 text-accent">
+        <span className="mt-0.5 text-link">
           <Gift size={20} />
         </span>
         <div className="min-w-0 flex-1">
@@ -32,7 +32,7 @@ export function WishCard({ wish, claim }: { wish: RecordDTO; claim?: RecordDTO }
                 href={d.link}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="text-accent underline underline-offset-2"
+                className="text-link underline underline-offset-2"
               >
                 {d.title}
               </a>

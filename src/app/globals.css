@@ -1,35 +1,98 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/bricolage-grotesque/index.css';
+@import '@fontsource-variable/instrument-sans/index.css';
 
-/* Habitat's look: warm paper, soft ink, and one accent colour that each Habitat chooses. */
+/*
+ * Habitat's look.
+ *
+ *   60%  canvas      a cool off-white (or near-black) that lets your friends' photos be the colour
+ *   30%  structure   midnight navy: the navigation, headers and the Habitat banner
+ *   10%  accent      one vivid colour, reserved for actions, unread dots and active states
+ *
+ * The accent is the part each Habitat chooses. Everything that sits on it picks black or white text
+ * so contrast stays above 4.5:1 whatever colour a group picks (see inkFor in lib/utils.ts).
+ */
 :root {
-  --accent: #e8590c;
-  --accent-ink: #ffffff;
-  --background: #faf7f2;
+  /* ember is Habitat's own accent; a Habitat overrides --accent on its wrapper */
+  --accent: #ff6a3d;
+  --accent-ink: #0b1220;
+
+  --background: #f4f6fb;
   --surface: #ffffff;
-  --surface-2: #f3ede3;
-  --ink: #2b241c;
-  --ink-soft: #6b5f52;
-  --line: #e8dece;
-  --danger: #c92a2a;
-  --ok: #2b8a3e;
+  --surface-2: #eaeef6;
+  --line: #d9dfeb;
+  --ink: #0b1220;
+  --ink-soft: #566176;
+
+  /* the accent as TEXT (links, small labels): darkened so it clears 4.5:1 on the surfaces above */
+  --link-base: #0b1220;
+  --link-mix: 62%;
+  --link: color-mix(in oklab, var(--accent) var(--link-mix), var(--link-base));
+
+  --nav: #101b33;
+  --nav-2: #18264a;
+  --nav-ink: #e9eefb;
+  --nav-soft: #9aa7c2;
+  --nav-line: rgb(255 255 255 / 0.09);
+
+  --danger: #c2255c;
+  --ok: #1b7f4b;
+
+  --shadow-card: 0 1px 0 rgb(11 18 32 / 0.04), 0 14px 30px -18px rgb(11 18 32 / 0.28);
+  --shadow-pop: 0 18px 50px -12px rgb(11 18 32 / 0.35);
+  color-scheme: light;
 }
 
+:root[data-theme='dark'] {
+  --background: #0d1017;
+  --surface: #151a23;
+  --surface-2: #1d2430;
+  --line: #29313f;
+  --ink: #eef1f8;
+  --ink-soft: #9aa5b9;
+  --link-base: #ffffff;
+  --link-mix: 70%;
+  --nav: #090c12;
+  --nav-2: #131a28;
+  --nav-ink: #e9eefb;
+  --nav-soft: #8a97b3;
+  --danger: #ff8aa8;
+  --ok: #6fdc9b;
+  --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.02), 0 14px 30px -18px rgb(0 0 0 / 0.7);
+  --shadow-pop: 0 18px 50px -12px rgb(0 0 0 / 0.7);
+  color-scheme: dark;
+}
+
+/* no explicit choice: follow the device */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --background: #16120e;
-    --surface: #1f1a15;
-    --surface-2: #2a231c;
-    --ink: #f3ece2;
-    --ink-soft: #b3a798;
-    --line: #382f26;
-    --danger: #ff8787;
-    --ok: #69db7c;
+  :root:not([data-theme='light']):not([data-theme='dark']) {
+    --background: #0d1017;
+    --surface: #151a23;
+    --surface-2: #1d2430;
+    --line: #29313f;
+    --ink: #eef1f8;
+    --ink-soft: #9aa5b9;
+    --link-base: #ffffff;
+    --link-mix: 70%;
+    --nav: #090c12;
+    --nav-2: #131a28;
+    --danger: #ff8aa8;
+    --ok: #6fdc9b;
+    --shadow-card: 0 0 0 1px rgb(255 255 255 / 0.02), 0 14px 30px -18px rgb(0 0 0 / 0.7);
+    --shadow-pop: 0 18px 50px -12px rgb(0 0 0 / 0.7);
+    color-scheme: dark;
   }
+}
+
+/* A custom property is computed where it is defined, so --link must be re-derived wherever a Habitat sets its own --accent. */
+[style*='--accent'] {
+  --link: color-mix(in oklab, var(--accent) var(--link-mix), var(--link-base));
 }
 
 @theme inline {
   --color-accent: var(--accent);
   --color-accent-ink: var(--accent-ink);
+  --color-link: var(--link);
   --color-background: var(--background);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -38,7 +101,15 @@
   --color-line: var(--line);
   --color-danger: var(--danger);
   --color-ok: var(--ok);
-  --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --color-nav: var(--nav);
+  --color-nav-2: var(--nav-2);
+  --color-nav-ink: var(--nav-ink);
+  --color-nav-soft: var(--nav-soft);
+  --color-nav-line: var(--nav-line);
+  --font-sans: 'Instrument Sans Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Bricolage Grotesque Variable', 'Instrument Sans Variable', system-ui, sans-serif;
+  --shadow-card: var(--shadow-card);
+  --shadow-pop: var(--shadow-pop);
 }
 
 html {
@@ -48,12 +119,73 @@ html {
 body {
   min-height: 100dvh;
   font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Headings carry the personality: a chunky, slightly quirky grotesque, set tight. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.025em;
+  font-variation-settings: 'wdth' 92;
+}
+h1 {
+  font-weight: 800;
+}
+
+::selection {
+  background: color-mix(in oklab, var(--accent) 45%, transparent);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 3px solid color-mix(in oklab, var(--accent) 80%, white);
   outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ---- motion: a little spring, never in the way ---- */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pop {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.22);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(var(--r, 0deg));
+  }
+  50% {
+    transform: translateY(-8px) rotate(calc(var(--r, 0deg) + 1.5deg));
+  }
+}
+.animate-rise {
+  animation: rise 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.animate-pop {
+  animation: pop 0.35s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+.animate-drift {
+  animation: drift 7s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -61,6 +193,7 @@ body {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
@@ -68,4 +201,10 @@ body {
 
 .safe-bottom {
   padding-bottom: max(env(safe-area-inset-bottom), 0px);
+}
+
+/* a fine paper-grain so flat surfaces don't feel like a template */
+.grain {
+  background-image: radial-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 14px 14px;
 }

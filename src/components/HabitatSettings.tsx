@@ -11,19 +11,9 @@ import { Input, Label, Select, Textarea } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { RelativeTime } from '@/components/RelativeTime';
 import { ApiError, apiFetch, errorMessage } from '@/lib/api-client';
-import { cn, inkFor } from '@/lib/utils';
+import { ACCENTS, cn, inkFor } from '@/lib/utils';
 import { useHabitat } from '@/modules/sdk/context';
 
-const COLOURS = [
-  '#e8590c',
-  '#d6336c',
-  '#7048e8',
-  '#1c7ed6',
-  '#0c8599',
-  '#2b8a3e',
-  '#f08c00',
-  '#495057',
-];
 const EMOJI = [
   '🌿',
   '🍻',
@@ -174,16 +164,16 @@ export function HabitatSettings({ initial, isOwner }: { initial: SettingsData; i
         </div>
         <div>
           <Label>Colour</Label>
-          <div className="flex flex-wrap gap-2">
-            {COLOURS.map((c) => (
+          <div className="grid max-w-md grid-cols-8 gap-2">
+            {ACCENTS.map(({ hex: c, name: colourName }) => (
               <button
                 key={c}
                 type="button"
                 aria-pressed={form.accent === c}
-                aria-label={`Colour ${c}`}
+                aria-label={`Colour ${colourName}`}
                 onClick={() => setForm({ ...form, accent: c })}
                 className={cn(
-                  'flex h-10 w-10 items-center justify-center rounded-full',
+                  'flex aspect-square w-full items-center justify-center rounded-full',
                   form.accent === c && 'ring-2 ring-ink ring-offset-2 ring-offset-background',
                 )}
                 style={{ background: c, color: inkFor(c) }}

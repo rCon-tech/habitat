@@ -40,7 +40,7 @@ export function Widget() {
       )}
       <Link
         href={`/h/${slug}/m/split-costs`}
-        className="inline-block text-sm font-semibold text-accent"
+        className="inline-block text-sm font-semibold text-link"
       >
         Open →
       </Link>

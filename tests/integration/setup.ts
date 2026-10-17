@@ -7,7 +7,7 @@ const url =
 // Must be set before anything imports `@/db`.
 process.env.DATABASE_URL = url;
 process.env.EMAIL_TRANSPORT = 'outbox';
-process.env.NEXT_PUBLIC_APP_URL = 'http://localhost:3000';
+process.env.APP_URL = 'http://localhost:3000';
 
 beforeAll(async () => {
   const { getDb } = await import('@/db');

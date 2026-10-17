@@ -37,7 +37,7 @@ export function RecCard({ record }: FeedCardProps) {
                 href={d.link}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
-                className="text-accent underline underline-offset-2"
+                className="text-link underline underline-offset-2"
               >
                 {d.title}
               </a>
@@ -51,7 +51,7 @@ export function RecCard({ record }: FeedCardProps) {
                 <Star
                   key={n}
                   size={16}
-                  className={n <= d.rating! ? 'fill-accent text-accent' : 'text-line'}
+                  className={n <= d.rating! ? 'fill-accent text-link' : 'text-line'}
                 />
               ))}
             </div>

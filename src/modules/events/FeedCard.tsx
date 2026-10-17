@@ -15,9 +15,9 @@ export function FeedCard({ record }: FeedCardProps) {
       <p className="text-sm text-ink-soft">planned an event</p>
       <Link href={`/h/${slug}/m/events/${record.id}`} className="block rounded-xl bg-surface-2 p-3">
         <div className="flex items-center gap-2 font-bold">
-          <CalendarDays size={18} className="text-accent" /> {d.title}
+          <CalendarDays size={18} className="text-link" /> {d.title}
         </div>
-        <div className="mt-1 text-sm text-accent">{formatWhen(d.startsAt, d.endsAt)}</div>
+        <div className="mt-1 text-sm text-link">{formatWhen(d.startsAt, d.endsAt)}</div>
         {d.location && (
           <div className="mt-0.5 flex items-center gap-1 text-sm text-ink-soft">
             <MapPin size={13} /> {d.location}

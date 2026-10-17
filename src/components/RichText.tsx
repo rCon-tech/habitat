@@ -53,7 +53,7 @@ export function RichText({
             href={part}
             target="_blank"
             rel="noopener noreferrer nofollow"
-            className="text-accent underline underline-offset-2"
+            className="text-link underline underline-offset-2"
           >
             {part}
           </a>

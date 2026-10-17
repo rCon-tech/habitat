@@ -1,7 +1,7 @@
 'use client';
 
 import * as M from '@radix-ui/react-dropdown-menu';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
 export const DropdownMenu = M.Root;
@@ -14,7 +14,7 @@ export function DropdownMenuContent({ className, ...props }: ComponentProps<type
         sideOffset={6}
         align="end"
         className={cn(
-          'z-50 min-w-48 rounded-xl border border-line bg-surface p-1 shadow-lg',
+          'animate-rise z-50 min-w-52 rounded-2xl border border-line bg-surface p-1.5 shadow-pop',
           className,
         )}
         {...props}
@@ -31,7 +31,7 @@ export function DropdownMenuItem({
   return (
     <M.Item
       className={cn(
-        'flex cursor-pointer select-none items-center gap-2 rounded-lg px-3 py-2 text-sm outline-none data-[highlighted]:bg-surface-2',
+        'flex cursor-pointer select-none items-center gap-2.5 rounded-xl px-3 py-2 text-sm font-medium outline-none data-[highlighted]:bg-surface-2',
         danger && 'text-danger',
         className,
       )}
@@ -43,8 +43,9 @@ export function DropdownMenuItem({
 export const DropdownMenuSeparator = ({ className }: { className?: string }) => (
   <M.Separator className={cn('my-1 h-px bg-line', className)} />
 );
-export const DropdownMenuLabel = ({ children }: { children: React.ReactNode }) => (
-  <M.Label className="px-3 py-1 text-xs font-semibold uppercase tracking-wide text-ink-soft">
+
+export const DropdownMenuLabel = ({ children }: { children: ReactNode }) => (
+  <M.Label className="px-3 py-1 text-xs font-bold uppercase tracking-wider text-ink-soft">
     {children}
   </M.Label>
 );

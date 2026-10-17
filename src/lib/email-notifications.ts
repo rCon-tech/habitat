@@ -10,7 +10,6 @@ import { sendEmail } from './email';
 
 const EMAILED = ['proposal.opened', 'proposal.decided', 'events.reminder'] as const;
 
-
 /**
  * Email the notifications that deserve one, to people who haven't opted out. Runs after the
  * transaction that created them, from cron, so a mail failure can never undo an action.

@@ -14,7 +14,7 @@ export function PopoverContent({ className, ...props }: ComponentProps<typeof P.
         sideOffset={8}
         align="end"
         className={cn(
-          'z-50 w-[min(24rem,calc(100vw-1.5rem))] rounded-2xl border border-line bg-surface p-2 shadow-xl',
+          'animate-rise z-50 w-[min(24rem,calc(100vw-1.5rem))] rounded-3xl border border-line bg-surface p-2 shadow-pop',
           className,
         )}
         {...props}

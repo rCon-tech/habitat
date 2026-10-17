@@ -23,7 +23,7 @@ export function FieldText({ cell, value }: { cell: Cell; value: unknown }) {
           href={String(value)}
           target="_blank"
           rel="noopener noreferrer nofollow"
-          className="text-accent underline underline-offset-2"
+          className="text-link underline underline-offset-2"
         >
           {String(value)}
         </a>

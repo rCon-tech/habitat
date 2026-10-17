@@ -27,7 +27,7 @@ export default async function ProposalsPage({ params }: { params: Promise<{ slug
         {open.length === 0 ? (
           <EmptyState emoji="🗳️" title="Nothing to vote on">
             See something missing? Browse the{' '}
-            <Link className="text-accent underline" href={`/h/${slug}/library`}>
+            <Link className="text-link underline" href={`/h/${slug}/library`}>
               library
             </Link>{' '}
             and suggest it.

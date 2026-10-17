@@ -8,6 +8,8 @@ export interface HabitatContextValue {
   habitatId: string;
   slug: string;
   name: string;
+  emoji: string;
+  description: string;
   accent: string;
   me: { id: string; name: string; image: string | null; nickname: string | null; role: Role };
   members: Array<MemberDTO & { role: Role }>;

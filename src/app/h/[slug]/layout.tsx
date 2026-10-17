@@ -54,6 +54,8 @@ export default async function HabitatLayout({
           habitatId: habitat.id,
           slug: habitat.slug,
           name: habitat.name,
+          emoji: habitat.emoji,
+          description: habitat.description ?? '',
           accent: habitat.accent,
           me: {
             id: user.id,

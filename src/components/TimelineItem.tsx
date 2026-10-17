@@ -65,7 +65,7 @@ export function TimelineItem({
   return (
     <Card id={`record-${record.id}`} className="space-y-3">
       {record.pinned && (
-        <p className="flex items-center gap-1 text-xs font-semibold text-accent">
+        <p className="flex items-center gap-1 text-xs font-semibold text-link">
           <Pin size={12} /> Pinned
         </p>
       )}

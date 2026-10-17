@@ -34,7 +34,7 @@ export function Widget() {
                 className="flex items-center gap-3 rounded-lg p-1 hover:bg-surface-2"
               >
                 <span className="flex w-11 shrink-0 flex-col items-center rounded-lg bg-accent/15 py-1 text-center leading-tight">
-                  <span className="text-[10px] font-bold uppercase text-accent">
+                  <span className="text-[10px] font-bold uppercase text-link">
                     {format(new Date(e.data.startsAt), 'MMM')}
                   </span>
                   <span className="text-lg font-extrabold">

@@ -93,9 +93,7 @@ function List({
           <Card className="space-y-3">
             <Link href={`/h/${slug}/m/events/${e.id}`} className="block">
               <div className="font-bold">{e.data.title}</div>
-              <div className="text-sm text-accent">
-                {formatWhen(e.data.startsAt, e.data.endsAt)}
-              </div>
+              <div className="text-sm text-link">{formatWhen(e.data.startsAt, e.data.endsAt)}</div>
               {e.data.location && <div className="text-sm text-ink-soft">{e.data.location}</div>}
             </Link>
             {showRsvp && <RsvpButtons eventId={e.id} size="sm" />}

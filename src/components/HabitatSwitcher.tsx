@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { ChevronsUpDown, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { apiFetch } from '@/lib/api-client';
-import { inkFor } from '@/lib/utils';
+import { cn, inkFor } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,10 +21,13 @@ interface Mine {
   accent: string;
 }
 
+/** `nav` sits on the navy sidebar; `plain` sits on the page background. */
 export function HabitatSwitcher({
   current,
+  tone = 'plain',
 }: {
   current: { slug: string; name: string; emoji: string; accent: string };
+  tone?: 'nav' | 'plain';
 }) {
   const { data } = useQuery({
     queryKey: ['my-habitats'],
@@ -33,16 +36,32 @@ export function HabitatSwitcher({
   });
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="flex max-w-[60vw] items-center gap-2 rounded-xl px-2 py-1 hover:bg-surface-2">
+      <DropdownMenuTrigger
+        className={cn(
+          'flex min-w-0 items-center gap-2.5 rounded-2xl text-left transition',
+          tone === 'nav'
+            ? 'w-full bg-nav-2 p-2.5 text-nav-ink hover:brightness-125'
+            : 'max-w-[58vw] px-1.5 py-1 hover:bg-surface-2',
+        )}
+      >
         <span
-          className="flex h-8 w-8 items-center justify-center rounded-lg text-lg"
+          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-t-full rounded-b-lg text-lg"
           style={{ background: current.accent, color: inkFor(current.accent) }}
           aria-hidden
         >
           {current.emoji}
         </span>
-        <span className="truncate font-bold">{current.name}</span>
-        <ChevronsUpDown size={16} className="shrink-0 text-ink-soft" aria-hidden />
+        <span className="min-w-0 flex-1">
+          <span className="block truncate text-[15px] font-extrabold leading-tight">
+            {current.name}
+          </span>
+          {tone === 'nav' && <span className="block text-xs text-nav-soft">Switch Habitat</span>}
+        </span>
+        <ChevronsUpDown
+          size={16}
+          className={cn('shrink-0', tone === 'nav' ? 'text-nav-soft' : 'text-ink-soft')}
+          aria-hidden
+        />
         <span className="sr-only">Switch Habitat</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="start">

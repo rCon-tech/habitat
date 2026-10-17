@@ -66,7 +66,7 @@ export function EventDetail({ eventId }: { eventId: string }) {
         <div className="flex items-start justify-between gap-3">
           <div>
             <h1 className="text-2xl font-extrabold">{title}</h1>
-            <p className="font-medium text-accent">{formatWhen(startsAt, endsAt)}</p>
+            <p className="font-medium text-link">{formatWhen(startsAt, endsAt)}</p>
             {location && (
               <p className="mt-1 flex items-center gap-1 text-sm text-ink-soft">
                 <MapPin size={14} /> {location}

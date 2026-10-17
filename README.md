@@ -2,7 +2,7 @@
 
 A private mini social network for a group of friends. You make a Habitat, invite your people, and build it from **modules** (a feed, photos, events, chat, polls, birthdays and more) that the group chooses together by voting. Nothing is public, there are no ads and no algorithm.
 
-The design is in [`PLAN.md`](./PLAN.md). How to make a module is in [`docs/writing-a-module.md`](./docs/writing-a-module.md).
+The design is in [`PLAN.md`](./PLAN.md). How to make a module is in [`docs/writing-a-module.md`](./docs/writing-a-module.md), and the look and feel is in [`docs/design.md`](./docs/design.md).
 
 ## What's here
 

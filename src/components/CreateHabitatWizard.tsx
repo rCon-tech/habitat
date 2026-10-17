@@ -4,11 +4,12 @@ import { Check, Copy, Share2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
+import { Crest } from '@/components/Crest';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { FieldError, Input, Label } from '@/components/ui/input';
 import { ApiError, apiFetch, errorMessage } from '@/lib/api-client';
-import { cn, inkFor } from '@/lib/utils';
+import { ACCENTS, cn, inkFor } from '@/lib/utils';
 
 export interface StarterModule {
   id: string;
@@ -39,16 +40,6 @@ const EMOJI = [
   '🧗',
   '🎉',
 ];
-const COLOURS = [
-  '#e8590c',
-  '#d6336c',
-  '#7048e8',
-  '#1c7ed6',
-  '#0c8599',
-  '#2b8a3e',
-  '#f08c00',
-  '#495057',
-];
 
 export function CreateHabitatWizard({
   starters,
@@ -61,7 +52,7 @@ export function CreateHabitatWizard({
   const [step, setStep] = useState(0);
   const [name, setName] = useState('');
   const [emoji, setEmoji] = useState(EMOJI[0]!);
-  const [accent, setAccent] = useState(COLOURS[0]!);
+  const [accent, setAccent] = useState<string>(ACCENTS[0].hex);
   const [picked, setPicked] = useState<Set<string>>(new Set(starters.map((s) => s.id)));
   const [busy, setBusy] = useState(false);
   const [fields, setFields] = useState<Record<string, string[]>>({});
@@ -110,23 +101,34 @@ export function CreateHabitatWizard({
   }
 
   const preview = (
-    <div className="flex items-center gap-3 rounded-2xl border border-line bg-surface p-3">
-      <span
-        className="flex h-12 w-12 items-center justify-center rounded-xl text-2xl"
-        style={{ background: accent, color: inkFor(accent) }}
-        aria-hidden
-      >
-        {emoji}
-      </span>
-      <div>
-        <div className="font-bold">{name.trim() || 'Your Habitat'}</div>
-        <div className="text-xs text-ink-soft">{picked.size} modules · just you for now</div>
+    <div
+      style={{ ['--accent' as string]: accent }}
+      className="overflow-hidden rounded-[1.75rem] border border-line bg-surface shadow-card"
+    >
+      <div className="relative">
+        <Crest seed={name.trim() || 'your habitat'} cols={10} rows={3} className="h-24 w-full" />
+        <span
+          className="absolute -bottom-6 left-5 flex h-14 w-14 items-center justify-center rounded-t-full rounded-b-xl border-4 border-surface text-2xl"
+          style={{ background: accent, color: inkFor(accent) }}
+          aria-hidden
+        >
+          {emoji}
+        </span>
+      </div>
+      <div className="px-5 pb-4 pt-9">
+        <div className="font-display text-xl font-extrabold leading-tight">
+          {name.trim() || 'Your Habitat'}
+        </div>
+        <div className="text-sm text-ink-soft">{picked.size} modules · just you for now</div>
       </div>
     </div>
   );
 
   return (
-    <div className="space-y-6">
+    <div
+      className="space-y-6"
+      style={{ ['--accent' as string]: accent, ['--accent-ink' as string]: inkFor(accent) }}
+    >
       <ol className="flex gap-2" aria-label="Progress">
         {['Name', 'Look', 'Modules', 'Invite'].map((label, i) => (
           <li
@@ -191,16 +193,16 @@ export function CreateHabitatWizard({
           </div>
           <div>
             <Label>Colour</Label>
-            <div className="flex flex-wrap gap-2">
-              {COLOURS.map((c) => (
+            <div className="grid max-w-md grid-cols-8 gap-2">
+              {ACCENTS.map(({ hex: c, name: colourName }) => (
                 <button
                   key={c}
                   type="button"
                   onClick={() => setAccent(c)}
-                  aria-label={`Colour ${c}`}
+                  aria-label={`Colour ${colourName}`}
                   aria-pressed={accent === c}
                   className={cn(
-                    'flex h-10 w-10 items-center justify-center rounded-full',
+                    'flex aspect-square w-full items-center justify-center rounded-full',
                     accent === c && 'ring-2 ring-ink ring-offset-2 ring-offset-background',
                   )}
                   style={{ background: c, color: inkFor(c) }}

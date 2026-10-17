@@ -38,7 +38,7 @@ export default async function ModuleDetail({
         <ArrowLeft size={14} /> Library
       </Link>
       <div className="flex items-start gap-4">
-        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent/15 text-accent">
+        <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent/15 text-link">
           <ModuleIcon name={manifest.icon} size={28} />
         </span>
         <div>

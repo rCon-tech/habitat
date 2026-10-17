@@ -44,6 +44,7 @@ export function Composer() {
             placeholder="What’s happening?"
             aria-label="Write a post"
             maxLength={5000}
+            className="min-h-16"
             onKeyDown={(e) => {
               if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
                 e.preventDefault();

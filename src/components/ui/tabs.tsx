@@ -9,7 +9,10 @@ export const TabsContent = T.Content;
 
 export function TabsList({ className, ...props }: ComponentProps<typeof T.List>) {
   return (
-    <T.List className={cn('mb-4 inline-flex rounded-xl bg-surface-2 p-1', className)} {...props} />
+    <T.List
+      className={cn('mb-4 inline-flex rounded-full bg-surface-2 p-1', className)}
+      {...props}
+    />
   );
 }
 
@@ -17,7 +20,7 @@ export function TabsTrigger({ className, ...props }: ComponentProps<typeof T.Tri
   return (
     <T.Trigger
       className={cn(
-        'rounded-lg px-4 py-1.5 text-sm font-semibold text-ink-soft data-[state=active]:bg-surface data-[state=active]:text-ink data-[state=active]:shadow-sm',
+        'rounded-full px-5 py-1.5 text-sm font-bold text-ink-soft transition data-[state=active]:bg-ink data-[state=active]:text-background',
         className,
       )}
       {...props}
