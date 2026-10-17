@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { ZodError, type ZodType } from 'zod';
 import { getDb } from '@/db';
-import { env } from '@/env';
+import { appUrl } from '@/env';
 import { userFromRequest, type CurrentUser } from './current-user';
 import { DomainError, badRequest, forbidden, unauthenticated } from './errors';
 import { BadQueryError } from './record-query';
@@ -53,7 +53,7 @@ function fieldErrors(e: ZodError) {
 function checkOrigin(req: Request) {
   if (['GET', 'HEAD', 'OPTIONS'].includes(req.method)) return;
   const origin = req.headers.get('origin');
-  if (origin && origin !== new URL(env().NEXT_PUBLIC_APP_URL).origin) {
+  if (origin && origin !== new URL(appUrl()).origin) {
     throw new DomainError('bad_origin', 403, 'Request came from an unexpected origin.');
   }
   const site = req.headers.get('sec-fetch-site');

@@ -3,12 +3,12 @@ import { getDb } from '@/db';
 import { habitat, membership, proposal, proposalVote, record, user } from '@/db/schema';
 import { DigestEmail, type DigestSection } from '@/emails/DigestEmail';
 import { renderEmail } from '@/emails/render';
+import { appUrl } from '@/env';
 import { sendEmail } from './email';
 import { listActive } from './installed-modules';
 import { timelinePairs } from './timeline';
 
 const DAY = 86400_000;
-const appUrl = () => process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
 /** Weekly: per person, per Habitat, only what's new. Sections with nothing to say are dropped. */
 export async function sendDigests(now = new Date()): Promise<number> {

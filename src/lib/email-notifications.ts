@@ -5,11 +5,11 @@ import { EventReminderEmail } from '@/emails/EventReminderEmail';
 import { ProposalEmail } from '@/emails/ProposalEmail';
 import { renderEmail } from '@/emails/render';
 import { getManifest } from '@/modules/registry';
+import { appUrl } from '@/env';
 import { sendEmail } from './email';
 
 const EMAILED = ['proposal.opened', 'proposal.decided', 'events.reminder'] as const;
 
-const appUrl = () => process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
 /**
  * Email the notifications that deserve one, to people who haven't opted out. Runs after the

@@ -5,7 +5,7 @@ import { magicLink } from 'better-auth/plugins';
 import { getDb, schema } from '@/db';
 import { MagicLinkEmail } from '@/emails/MagicLinkEmail';
 import { renderEmail } from '@/emails/render';
-import { env } from '@/env';
+import { appUrl, env } from '@/env';
 import { sendEmail } from './email';
 import { rateLimit } from './rate-limit';
 
@@ -17,9 +17,9 @@ function create() {
       : undefined;
 
   return betterAuth({
-    baseURL: e.BETTER_AUTH_URL ?? e.NEXT_PUBLIC_APP_URL,
+    baseURL: appUrl(),
     secret: e.BETTER_AUTH_SECRET,
-    trustedOrigins: [e.NEXT_PUBLIC_APP_URL],
+    trustedOrigins: [appUrl()],
     database: drizzleAdapter(getDb(), {
       provider: 'pg',
       schema: {

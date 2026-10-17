@@ -4,7 +4,7 @@ import { habitat } from '@/db/schema';
 import { created, habitatRoute, parseBody } from '@/lib/api';
 import { InviteEmail } from '@/emails/InviteEmail';
 import { renderEmail } from '@/emails/render';
-import { env } from '@/env';
+import { appUrl } from '@/env';
 import { sendEmail } from '@/lib/email';
 import { createInvite, listInvites } from '@/lib/invites';
 import { rateLimit } from '@/lib/rate-limit';
@@ -18,7 +18,7 @@ export const POST = habitatRoute<P>(async ({ req, member, user }) => {
   const { email, ...opts } = await parseBody(req, CreateInviteBody);
   if (email) await rateLimit(`invite-email:${user.id}`, 10, 3600);
   const { code, invite } = await createInvite(member, opts);
-  const url = `${env().NEXT_PUBLIC_APP_URL}/join/${code}`;
+  const url = `${appUrl()}/join/${code}`;
   if (email) {
     const [h] = await getDb().select().from(habitat).where(eq(habitat.id, member.habitatId));
     const body = await renderEmail(
