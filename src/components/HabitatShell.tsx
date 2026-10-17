@@ -78,7 +78,7 @@ export function HabitatShell({
       match: (p: string) => p.startsWith(`${base}/m/${n.id}`),
     })),
     { href: `${base}/members`, label: 'Members', icon: <Users size={20} /> },
-    { href: `${base}/library`, label: 'Library', icon: <Puzzle size={20} /> },
+    { href: `${base}/widgets`, label: 'Widgets', icon: <Puzzle size={20} /> },
     { href: `${base}/proposals`, label: 'Votes', icon: <Vote size={20} />, badge: waiting },
     ...(isAdmin(role)
       ? [{ href: `${base}/settings`, label: 'Settings', icon: <Settings size={20} /> }]

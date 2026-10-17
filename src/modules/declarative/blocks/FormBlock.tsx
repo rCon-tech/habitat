@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { FieldError, Input, Label, Select, Textarea } from '@/components/ui/input';
 import { ApiError, errorMessage } from '@/lib/api-client';
+import { displayName } from '@/components/MemberAvatar';
+import { useHabitat } from '../../sdk/context';
 import { useCreateRecord } from '../../sdk/hooks';
 import type { CollectionDef, Field } from '../../sdk/types';
 
@@ -38,8 +40,10 @@ export function FormBlock({
       'datetime',
       'enum',
       'url',
+      'member',
     ].includes(def.fields[n]?.type ?? ''),
   );
+  const { me, members } = useHabitat();
   const [values, setValues] = useState<Record<string, string | boolean>>({});
   const [errors, setErrors] = useState<Record<string, string[]>>({});
   const create = useCreateRecord(moduleId, collection);
@@ -48,7 +52,7 @@ export function FormBlock({
     const data: Record<string, unknown> = {};
     for (const n of names) {
       const f = def.fields[n] as Field;
-      const v = values[n];
+      const v = f.type === 'member' ? (values[n] ?? me.id) : values[n];
       if (v === undefined || v === '') continue;
       if (f.type === 'integer' || f.type === 'number') data[n] = Number(v);
       else if (f.type === 'datetime') data[n] = new Date(String(v)).toISOString();
@@ -106,6 +110,19 @@ export function FormBlock({
                   value={String(values[n] ?? '')}
                   onChange={(e) => setValues({ ...values, [n]: e.target.value })}
                 />
+              ) : f.type === 'member' ? (
+                <Select
+                  id={id}
+                  required={required}
+                  value={String(values[n] ?? me.id)}
+                  onChange={(e) => setValues({ ...values, [n]: e.target.value })}
+                >
+                  {members.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.id === me.id ? 'Me' : displayName(m)}
+                    </option>
+                  ))}
+                </Select>
               ) : f.type === 'enum' ? (
                 <Select
                   id={id}

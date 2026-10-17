@@ -90,3 +90,23 @@ describe('referenceFields', () => {
     ).toEqual({ media: ['a', 'b'], members: ['c', 'd'] });
   });
 });
+
+describe('person fields', () => {
+  const schema = compileFields({
+    who: { type: 'member', required: true },
+    crew: { type: 'member-list', max: 3 },
+  });
+  // What Better Auth actually produces for a user id. It is not a UUID.
+  const authId = 'Irc9N56nqDpW9f0VnGhXAynqIezTfAaj';
+
+  it('accepts real Better Auth ids (regression: these were rejected as "Invalid UUID")', () => {
+    expect(schema.safeParse({ who: authId, crew: [authId, 'abc_DEF-123'] }).success).toBe(true);
+  });
+
+  it('still rejects junk: empty, too long, or with characters that are not part of an id', () => {
+    for (const bad of ['', 'x'.repeat(65), 'has space', "o'brien", 'a;b', '<script>', 'a/b']) {
+      expect(schema.safeParse({ who: bad }).success, JSON.stringify(bad)).toBe(false);
+    }
+    expect(schema.safeParse({ who: authId, crew: ['ok', 'ok', 'ok', 'ok'] }).success).toBe(false); // max 3
+  });
+});

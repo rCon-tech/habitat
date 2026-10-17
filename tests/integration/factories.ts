@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import { getDb } from '@/db';
 import * as s from '@/db/schema';
@@ -8,8 +8,11 @@ import type { MemberCtx } from '@/lib/session';
 
 let counter = 0;
 
+/** Better Auth style ids (random letters and digits, not UUIDs), so tests don't assume a shape production doesn't have. */
+const authId = () => randomBytes(24).toString('base64url').slice(0, 32);
+
 export async function makeUser(name = `User ${++counter}`) {
-  const id = randomUUID();
+  const id = authId();
   await getDb()
     .insert(s.user)
     .values({ id, name, email: `${id}@example.com`, emailVerified: true });

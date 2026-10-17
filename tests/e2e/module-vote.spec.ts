@@ -9,7 +9,7 @@ test('A proposes Polls, B votes yes, and Polls appears for both', async ({ page,
   await joinViaInvite(b.page, 'Gus', invite);
 
   // Polls isn't there yet
-  await page.goto(`/h/${slug}/library`);
+  await page.goto(`/h/${slug}/widgets`);
   await expect(page.getByRole('link', { name: /Polls/ }).first()).toBeVisible();
   await page.goto(`/h/${slug}`);
   await page.getByRole('button', { name: 'More' }).click();
@@ -17,7 +17,7 @@ test('A proposes Polls, B votes yes, and Polls appears for both', async ({ page,
   await page.keyboard.press('Escape');
 
   // Fay proposes it
-  await page.goto(`/h/${slug}/library/polls`);
+  await page.goto(`/h/${slug}/widgets/polls`);
   await page.getByRole('button', { name: /propose adding polls/i }).click();
   await page.getByLabel(/why should we add it/i).fill('To settle where we eat');
   await page.getByRole('button', { name: 'Start vote' }).click();

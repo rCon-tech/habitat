@@ -43,6 +43,8 @@ export interface ParsedQuery {
 }
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+/** Better Auth user ids are short random strings, not UUIDs. */
+const USER_ID = /^[A-Za-z0-9_-]{1,64}$/;
 export const MAX_LIMIT = 100;
 
 function castFor(f: Field): Cast {
@@ -123,8 +125,8 @@ export function parseQuery(spec: QuerySpec, def: CollectionDef): ParsedQuery {
 
   if (spec.parentId !== undefined && !UUID.test(spec.parentId))
     throw new BadQueryError('parentId must be a uuid');
-  if (spec.authorId !== undefined && !UUID.test(spec.authorId))
-    throw new BadQueryError('authorId must be a uuid');
+  if (spec.authorId !== undefined && !USER_ID.test(spec.authorId))
+    throw new BadQueryError('authorId must be a person id');
 
   const [orderField = 'createdAt', dirRaw = 'desc'] = (spec.order ?? 'createdAt:desc').split(':');
   if (dirRaw !== 'asc' && dirRaw !== 'desc')

@@ -18,7 +18,7 @@ const LABEL: Record<string, string> = {
   money: 'amount of money',
 };
 
-/** "title (short text), starts at (date and time)…": for the library's "what it stores" panel. */
+/** "title (short text), starts at (date and time)…": for the widget page's "what it stores" panel. */
 export function fieldSummary(spec: FieldSpec): string {
   const names = Object.entries(spec).map(
     ([k, f]) => `${k.replace(/([A-Z])/g, ' $1').toLowerCase()} (${LABEL[f.type] ?? f.type})`,

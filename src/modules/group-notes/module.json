@@ -1,0 +1,84 @@
+{
+  "manifest": {
+    "id": "group-notes",
+    "name": "Group Notes",
+    "tagline": "Wi-Fi codes, house rules, the plan",
+    "description": "A noticeboard for things people keep asking: the Wi-Fi password, the house rules, the plan for Saturday.",
+    "icon": "sticky-note",
+    "category": "practical",
+    "version": 1,
+    "nav": {
+      "label": "Notes",
+      "order": 22
+    },
+    "collections": {
+      "note": {
+        "fields": {
+          "title": {
+            "type": "text",
+            "max": 80,
+            "required": true
+          },
+          "body": {
+            "type": "longtext",
+            "max": 2000,
+            "required": true
+          }
+        },
+        "showInTimeline": true,
+        "permissions": {
+          "update": "author",
+          "delete": "author-or-admin"
+        },
+        "notify": [
+          {
+            "on": "create",
+            "to": "all-members",
+            "text": "{author} posted a note: {title}"
+          }
+        ]
+      }
+    }
+  },
+  "views": {
+    "main": {
+      "type": "stack",
+      "children": [
+        {
+          "type": "form",
+          "collection": "note",
+          "title": "Pin a note",
+          "submitLabel": "Post note",
+          "fields": ["title", "body"]
+        },
+        {
+          "type": "list",
+          "collection": "note",
+          "empty": "Nothing pinned. Put the Wi-Fi password here and never be asked again.",
+          "cells": [
+            {
+              "field": "title",
+              "as": "title"
+            },
+            {
+              "field": "body",
+              "as": "text"
+            }
+          ]
+        }
+      ]
+    },
+    "card": {
+      "cells": [
+        {
+          "field": "title",
+          "as": "title"
+        },
+        {
+          "field": "body",
+          "as": "text"
+        }
+      ]
+    }
+  }
+}

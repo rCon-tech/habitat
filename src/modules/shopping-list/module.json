@@ -1,0 +1,116 @@
+{
+  "manifest": {
+    "id": "shopping-list",
+    "name": "Shopping List",
+    "tagline": "What we need to pick up",
+    "description": "One shared list for the shop, the trip or the party. Anyone adds an item, and anyone ticks it off when it's in the basket.",
+    "icon": "shopping-cart",
+    "category": "practical",
+    "version": 1,
+    "nav": {
+      "label": "Shopping",
+      "order": 16
+    },
+    "collections": {
+      "item": {
+        "fields": {
+          "name": {
+            "type": "text",
+            "max": 100,
+            "required": true
+          },
+          "quantity": {
+            "type": "text",
+            "max": 30
+          },
+          "done": {
+            "type": "boolean"
+          }
+        },
+        "permissions": {
+          "update": "member",
+          "delete": "member"
+        }
+      }
+    }
+  },
+  "views": {
+    "main": {
+      "type": "stack",
+      "children": [
+        {
+          "type": "counter",
+          "collection": "item",
+          "filter": {
+            "field": "done",
+            "op": "eq",
+            "value": true
+          },
+          "label": "in the basket"
+        },
+        {
+          "type": "form",
+          "collection": "item",
+          "title": "Add an item",
+          "submitLabel": "Add",
+          "fields": ["name", "quantity"]
+        },
+        {
+          "type": "tabs",
+          "tabs": [
+            {
+              "label": "To get",
+              "view": {
+                "type": "list",
+                "collection": "item",
+                "filter": {
+                  "field": "done",
+                  "op": "eq",
+                  "value": false
+                },
+                "empty": "Nothing needed. Enjoy it.",
+                "cells": [
+                  {
+                    "field": "done",
+                    "as": "toggle"
+                  },
+                  {
+                    "field": "name",
+                    "as": "title"
+                  },
+                  {
+                    "field": "quantity",
+                    "as": "badge"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Got it",
+              "view": {
+                "type": "list",
+                "collection": "item",
+                "filter": {
+                  "field": "done",
+                  "op": "eq",
+                  "value": true
+                },
+                "empty": "Nothing ticked off yet.",
+                "cells": [
+                  {
+                    "field": "done",
+                    "as": "toggle"
+                  },
+                  {
+                    "field": "name",
+                    "as": "title"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

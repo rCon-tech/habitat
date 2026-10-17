@@ -1,0 +1,88 @@
+{
+  "manifest": {
+    "id": "link-stash",
+    "name": "Link Stash",
+    "tagline": "Good links worth keeping",
+    "description": "A shared pile of articles, videos, recipes and places, so great links don't disappear down the chat.",
+    "icon": "link-2",
+    "category": "social",
+    "version": 1,
+    "nav": {
+      "label": "Links",
+      "order": 21
+    },
+    "collections": {
+      "link": {
+        "fields": {
+          "title": {
+            "type": "text",
+            "max": 120,
+            "required": true
+          },
+          "url": {
+            "type": "url",
+            "required": true
+          },
+          "note": {
+            "type": "text",
+            "max": 200
+          }
+        },
+        "showInTimeline": true,
+        "permissions": {
+          "update": "author",
+          "delete": "author-or-admin"
+        }
+      }
+    }
+  },
+  "views": {
+    "main": {
+      "type": "stack",
+      "children": [
+        {
+          "type": "form",
+          "collection": "link",
+          "title": "Stash a link",
+          "submitLabel": "Add",
+          "fields": ["title", "url", "note"]
+        },
+        {
+          "type": "list",
+          "collection": "link",
+          "empty": "No links yet. What have you read lately?",
+          "cells": [
+            {
+              "field": "title",
+              "as": "title"
+            },
+            {
+              "field": "url",
+              "as": "link"
+            },
+            {
+              "field": "note",
+              "as": "muted"
+            }
+          ]
+        }
+      ]
+    },
+    "card": {
+      "cells": [
+        {
+          "field": "title",
+          "as": "title"
+        },
+        {
+          "field": "url",
+          "as": "link"
+        },
+        {
+          "field": "note",
+          "as": "muted"
+        }
+      ]
+    }
+  }
+}

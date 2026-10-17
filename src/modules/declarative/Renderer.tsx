@@ -5,6 +5,7 @@ import type { CollectionDef, ModuleManifest } from '../sdk/types';
 import { CounterBlock } from './blocks/CounterBlock';
 import { FormBlock } from './blocks/FormBlock';
 import { ImageGridBlock } from './blocks/ImageGridBlock';
+import { LeaderboardBlock } from './blocks/LeaderboardBlock';
 import { ListBlock } from './blocks/ListBlock';
 import { TabsBlock } from './blocks/TabsBlock';
 import type { ViewNode } from './mdl-schema';
@@ -55,6 +56,7 @@ export function Renderer({ manifest, view }: { manifest: ModuleManifest; view: V
             key={key}
             moduleId={id}
             collection={node.collection}
+            def={def(node.collection)}
             filter={node.filter}
             order={node.order}
             empty={node.empty}
@@ -74,7 +76,19 @@ export function Renderer({ manifest, view }: { manifest: ModuleManifest; view: V
             key={key}
             moduleId={id}
             collection={node.collection}
+            def={def(node.collection)}
             filter={node.filter}
+            label={node.label}
+          />
+        );
+      case 'leaderboard':
+        return (
+          <LeaderboardBlock
+            key={key}
+            moduleId={id}
+            collection={node.collection}
+            groupBy={node.groupBy}
+            sum={node.sum}
             label={node.label}
           />
         );

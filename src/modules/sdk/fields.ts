@@ -2,6 +2,11 @@ import { z } from 'zod';
 import type { Field, FieldSpec } from './types';
 
 const uuid = z.string().uuid();
+/**
+ * A person's id. Better Auth ids look like `Irc9N56nqDpW9f0V…`, not UUIDs, so only the characters and
+ * length are checked here; that the person really belongs to this Habitat is checked against the database.
+ */
+const userId = z.string().regex(/^[A-Za-z0-9_-]{1,64}$/, 'Not a valid person');
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Expected YYYY-MM-DD');
 const isoDateTime = z
   .string()
@@ -82,17 +87,17 @@ export function compileField(field: Field): z.ZodType {
     case 'media-list':
       return z.array(uuid).max(field.max).default([]);
     case 'member':
-      base = uuid;
+      base = userId;
       required = !!field.required;
       break;
     case 'member-list':
       return field.min
         ? z
-            .array(uuid)
+            .array(userId)
             .min(field.min)
             .max(field.max ?? 150)
         : z
-            .array(uuid)
+            .array(userId)
             .max(field.max ?? 150)
             .default([]);
     case 'text-list': {

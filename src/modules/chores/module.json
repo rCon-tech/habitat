@@ -1,0 +1,126 @@
+{
+  "manifest": {
+    "id": "chores",
+    "name": "Chores",
+    "tagline": "Who's doing what",
+    "description": "Hand out the jobs for the house, the trip or the event, and tick them off when they're done.",
+    "icon": "brush-cleaning",
+    "category": "practical",
+    "version": 1,
+    "nav": {
+      "label": "Chores",
+      "order": 17
+    },
+    "collections": {
+      "chore": {
+        "fields": {
+          "task": {
+            "type": "text",
+            "max": 120,
+            "required": true
+          },
+          "assignedTo": {
+            "type": "member"
+          },
+          "due": {
+            "type": "date"
+          },
+          "done": {
+            "type": "boolean"
+          }
+        },
+        "permissions": {
+          "update": "member",
+          "delete": "author-or-admin"
+        }
+      }
+    }
+  },
+  "views": {
+    "main": {
+      "type": "stack",
+      "children": [
+        {
+          "type": "counter",
+          "collection": "chore",
+          "filter": {
+            "field": "done",
+            "op": "eq",
+            "value": true
+          },
+          "label": "done"
+        },
+        {
+          "type": "form",
+          "collection": "chore",
+          "title": "Add a chore",
+          "submitLabel": "Add",
+          "fields": ["task", "assignedTo", "due"]
+        },
+        {
+          "type": "tabs",
+          "tabs": [
+            {
+              "label": "To do",
+              "view": {
+                "type": "list",
+                "collection": "chore",
+                "filter": {
+                  "field": "done",
+                  "op": "eq",
+                  "value": false
+                },
+                "empty": "All clear. Nothing to do.",
+                "cells": [
+                  {
+                    "field": "done",
+                    "as": "toggle"
+                  },
+                  {
+                    "field": "task",
+                    "as": "title"
+                  },
+                  {
+                    "field": "assignedTo",
+                    "as": "member"
+                  },
+                  {
+                    "field": "due",
+                    "as": "date"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Done",
+              "view": {
+                "type": "list",
+                "collection": "chore",
+                "filter": {
+                  "field": "done",
+                  "op": "eq",
+                  "value": true
+                },
+                "empty": "Nothing finished yet.",
+                "cells": [
+                  {
+                    "field": "done",
+                    "as": "toggle"
+                  },
+                  {
+                    "field": "task",
+                    "as": "title"
+                  },
+                  {
+                    "field": "assignedTo",
+                    "as": "member"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

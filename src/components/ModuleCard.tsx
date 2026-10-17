@@ -15,7 +15,7 @@ export interface ModuleCardData {
 export function ModuleCard({ m, slug }: { m: ModuleCardData; slug: string }) {
   return (
     <Link
-      href={`/h/${slug}/library/${m.id}`}
+      href={`/h/${slug}/widgets/${m.id}`}
       className="group flex h-full items-start gap-4 rounded-[1.75rem] border border-line bg-surface p-4 shadow-card transition duration-200 hover:-translate-y-0.5 hover:shadow-pop"
     >
       <span

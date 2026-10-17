@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input, Label } from '@/components/ui/input';
+import { GoogleButton } from '@/components/GoogleButton';
 import { authClient } from '@/lib/auth-client';
 
 export function LoginForm({
@@ -38,6 +39,15 @@ export function LoginForm({
           Sign in to join your friends. We’ll bring you straight back.
         </p>
       )}
+      {google && (
+        <>
+          <GoogleButton next={next} />
+          <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-wider text-ink-soft">
+            <span className="h-px flex-1 bg-line" /> or with email{' '}
+            <span className="h-px flex-1 bg-line" />
+          </div>
+        </>
+      )}
       <form onSubmit={submit} className="space-y-3">
         <div>
           <Label htmlFor="email">Email</Label>
@@ -61,21 +71,6 @@ export function LoginForm({
           </p>
         )}
       </form>
-      {google && (
-        <>
-          <div className="flex items-center gap-3 text-xs text-ink-soft">
-            <span className="h-px flex-1 bg-line" /> or <span className="h-px flex-1 bg-line" />
-          </div>
-          <Button
-            variant="outline"
-            size="lg"
-            className="w-full"
-            onClick={() => authClient.signIn.social({ provider: 'google', callbackURL: next })}
-          >
-            Continue with Google
-          </Button>
-        </>
-      )}
       <p className="text-center text-xs text-ink-soft">
         No password to remember. New here? This creates your account.
       </p>

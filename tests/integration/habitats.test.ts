@@ -36,7 +36,7 @@ describe('createHabitat', () => {
     expect((await listActive(getDb(), h.id)).map((a) => a.manifest.id)).toEqual(['chat']);
   });
 
-  it('refuses library modules at creation (those go through a vote)', async () => {
+  it('refuses non-starter widgets at creation (those go through a vote)', async () => {
     const u = await makeUser();
     await expect(
       createHabitat(u.id, { name: 'X Y Z', emoji: '🌿', accent: '#000000', modules: ['polls'] }),

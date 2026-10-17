@@ -30,6 +30,9 @@ function create() {
       },
     }),
     socialProviders: google,
+    // Same person, two ways in: someone who joined by email link can later press "Continue with Google" with
+    // the same address and land in the same account (Google has already verified that address).
+    account: { accountLinking: { enabled: true, trustedProviders: ['google'] } },
     // Off only for the e2e suite (outbox transport, which production refuses), where many sign-ups share one IP.
     rateLimit: { enabled: e.EMAIL_TRANSPORT !== 'outbox' },
     session: { expiresIn: 60 * 60 * 24 * 60, updateAge: 60 * 60 * 24 },

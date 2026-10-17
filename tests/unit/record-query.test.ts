@@ -93,3 +93,16 @@ describe('toSql', () => {
     expect(text).toMatch(/ORDER BY .*ASC/);
   });
 });
+
+describe('author filter', () => {
+  it('takes a Better Auth id, not just a UUID (regression)', () => {
+    expect(parseQuery({ authorId: 'Irc9N56nqDpW9f0VnGhXAynqIezTfAaj' }, def).authorId).toBe(
+      'Irc9N56nqDpW9f0VnGhXAynqIezTfAaj',
+    );
+  });
+  it('still refuses anything that is not an id', () => {
+    for (const bad of ["x'; DROP TABLE record; --", 'a b', '', 'x'.repeat(65)]) {
+      expect(() => parseQuery({ authorId: bad }, def), bad).toThrow(BadQueryError);
+    }
+  });
+});

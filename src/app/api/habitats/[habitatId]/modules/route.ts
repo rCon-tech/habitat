@@ -1,13 +1,13 @@
 import { habitatRoute, parseBody } from '@/lib/api';
 import { getDb } from '@/db';
 import { listActive, reorder } from '@/lib/installed-modules';
-import { listLibrary } from '@/modules/registry';
+import { listWidgets } from '@/modules/registry';
 import { openProposalsByModule } from '@/lib/proposals';
 import { ModuleOrderBody } from '@/lib/validation';
 
 type P = { habitatId: string };
 
-/** Installed modules plus the whole library with each module's state (installed / vote open). */
+/** Installed modules plus every widget with each module's state (installed / vote open). */
 export const GET = habitatRoute<P>(async ({ member }) => {
   const active = await listActive(getDb(), member.habitatId);
   const open = await openProposalsByModule(member);
@@ -18,7 +18,7 @@ export const GET = habitatRoute<P>(async ({ member }) => {
       position: a.position,
       settings: a.settings,
     })),
-    library: listLibrary().map((m) => ({
+    widgets: listWidgets().map((m) => ({
       id: m.id,
       name: m.name,
       tagline: m.tagline,

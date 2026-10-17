@@ -428,7 +428,7 @@ export async function listProposals(
   return toDTOs(db, ctx, rows);
 }
 
-/** Open votes by module, for the Library cards ("Vote open: 3/5 yes"). */
+/** Open votes by module, for the Widgets cards ("Vote open: 3/5 yes"). */
 export async function openProposalsByModule(ctx: MemberCtx): Promise<Map<string, ProposalDTO>> {
   const open = await listProposals(ctx, { status: 'open' });
   return new Map(open.filter((p) => p.moduleId).map((p) => [p.moduleId!, p]));

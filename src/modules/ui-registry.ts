@@ -8,7 +8,8 @@ import birthdays from './birthdays';
 import recommendations from './recommendations';
 import wishlist from './wishlist';
 import splitCosts from './split-costs';
-import bucketList from './bucket-list';
+import { declarativeModules } from './declarative/catalog';
+import { toModule } from './declarative/toModule';
 
 /** The client-side registry: manifests plus their React components. Server code uses `registry.ts`. */
 const MODULES: HabitatModule[] = [
@@ -21,7 +22,7 @@ const MODULES: HabitatModule[] = [
   recommendations,
   wishlist,
   splitCosts,
-  bucketList,
+  ...declarativeModules.map(toModule),
 ];
 const byId = new Map(MODULES.map((m) => [m.manifest.id, m]));
 

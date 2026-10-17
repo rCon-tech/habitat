@@ -1,0 +1,93 @@
+{
+  "manifest": {
+    "id": "scoreboard",
+    "name": "Scoreboard",
+    "tagline": "Keep score of everything",
+    "description": "Pub quiz, fantasy league, mini golf, board games: log a score and watch the table update. Everyone's totals add up automatically.",
+    "icon": "trophy",
+    "category": "fun",
+    "version": 1,
+    "nav": {
+      "label": "Scores",
+      "order": 19
+    },
+    "collections": {
+      "score": {
+        "fields": {
+          "game": {
+            "type": "text",
+            "max": 80,
+            "required": true
+          },
+          "player": {
+            "type": "member",
+            "required": true
+          },
+          "points": {
+            "type": "integer",
+            "min": -9999,
+            "max": 99999,
+            "required": true
+          },
+          "note": {
+            "type": "text",
+            "max": 120
+          }
+        },
+        "permissions": {
+          "update": "author-or-admin",
+          "delete": "author-or-admin"
+        }
+      }
+    }
+  },
+  "views": {
+    "main": {
+      "type": "stack",
+      "children": [
+        {
+          "type": "leaderboard",
+          "collection": "score",
+          "groupBy": "player",
+          "sum": "points",
+          "label": "points"
+        },
+        {
+          "type": "form",
+          "collection": "score",
+          "title": "Add a score",
+          "submitLabel": "Add score",
+          "fields": ["game", "player", "points", "note"]
+        },
+        {
+          "type": "text",
+          "text": "Latest",
+          "style": "title"
+        },
+        {
+          "type": "list",
+          "collection": "score",
+          "empty": "No scores yet.",
+          "cells": [
+            {
+              "field": "player",
+              "as": "member"
+            },
+            {
+              "field": "points",
+              "as": "badge"
+            },
+            {
+              "field": "game",
+              "as": "title"
+            },
+            {
+              "field": "note",
+              "as": "muted"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

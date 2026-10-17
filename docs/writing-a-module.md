@@ -73,7 +73,7 @@ vote: {
 
 ## A declarative module
 
-`src/modules/bucket-list/module.json` is a complete example. It has a `manifest` (above) and `views.main`:
+`src/modules/bucket-list/module.json` (and the other `module.json` files beside it: shopping list, chores, dinner rota, scoreboard, quote wall, link stash, group notes) is a complete example. It has a `manifest` (above) and `views.main`:
 
 ```json
 {
@@ -104,15 +104,18 @@ vote: {
 }
 ```
 
-| Block        | Does                                                                                                                                              |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `stack`      | Vertical group of blocks (up to 12 children, 4 levels deep)                                                                                       |
-| `text`       | A line of text (`title`, `muted` or `body`)                                                                                                       |
-| `form`       | A form generated from a collection's fields                                                                                                       |
-| `list`       | Records with a filter and cells (`title`, `text`, `muted`, `badge`, `link`, `toggle`, `image`, `money`, `date`); each gets comments and reactions |
-| `tabs`       | Tabs, each holding a block                                                                                                                        |
-| `counter`    | "3 of 12" for records matching a filter                                                                                                           |
-| `image-grid` | A grid of photos from a photo field                                                                                                               |
+| Block         | Does                                                                                                                                                                 |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `stack`       | Vertical group of blocks (up to 12 children, 4 levels deep)                                                                                                          |
+| `text`        | A line of text (`title`, `muted` or `body`)                                                                                                                          |
+| `form`        | A form generated from a collection's fields                                                                                                                          |
+| `list`        | Records with a filter and cells (`title`, `text`, `muted`, `badge`, `link`, `toggle`, `image`, `money`, `date`, `member`, `quote`); each gets comments and reactions |
+| `tabs`        | Tabs, each holding a block                                                                                                                                           |
+| `counter`     | "3 of 12" for records matching a filter                                                                                                                              |
+| `image-grid`  | A grid of photos from a photo field                                                                                                                                  |
+| `leaderboard` | Ranks people by `groupBy` (a `member` field), summing `sum` or counting entries                                                                                      |
+
+Other things worth knowing: a `member` field renders as a person picker and shows as avatar + name; a filter value of `"$today"` on a `date` field means "today" (use it for Coming up / Past); `views.card` gives the timeline card for a module's records (`{ "cells": [...] }`).
 
 There is no HTML, no script and no expression language. `src/modules/declarative/mdl-schema.ts` rejects anything else, and checks that every collection and field you mention exists, with an error that names the exact path.
 

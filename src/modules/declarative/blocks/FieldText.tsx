@@ -2,28 +2,45 @@
 
 import { format } from 'date-fns';
 import { MediaImage } from '@/components/MediaImage';
-import { Badge } from '@/components/ui/card';
+import { MemberAvatar, displayName } from '@/components/MemberAvatar';
 import { RichText } from '@/components/RichText';
+import { Badge } from '@/components/ui/card';
+import { useMemberLookup } from '../../sdk/context';
 import { formatMoney } from '../../split-costs/settle';
 import type { Cell } from '../mdl-schema';
 
 /** One field of one record, shown the way the module's definition asks. Always plain text or links, never HTML. */
 export function FieldText({ cell, value }: { cell: Cell; value: unknown }) {
+  const who = useMemberLookup();
   if (value === undefined || value === null || value === '') return null;
   switch (cell.as) {
     case 'title':
       return <div className="font-semibold">{String(value)}</div>;
+    case 'quote':
+      return (
+        <blockquote className="font-display text-xl font-bold leading-snug tracking-tight">
+          “{String(value)}”
+        </blockquote>
+      );
     case 'muted':
       return <RichText text={String(value)} className="text-sm text-ink-soft" />;
     case 'badge':
       return <Badge>{String(value)}</Badge>;
+    case 'member': {
+      const m = who(String(value));
+      return (
+        <span className="inline-flex items-center gap-2 text-sm font-semibold">
+          <MemberAvatar member={m} size="xs" /> {displayName(m)}
+        </span>
+      );
+    }
     case 'link':
       return (
         <a
           href={String(value)}
           target="_blank"
           rel="noopener noreferrer nofollow"
-          className="text-link underline underline-offset-2"
+          className="break-all text-link underline underline-offset-2"
         >
           {String(value)}
         </a>
@@ -35,7 +52,7 @@ export function FieldText({ cell, value }: { cell: Cell; value: unknown }) {
       return <span className="font-semibold">{formatMoney(m.amountMinor, m.currency)}</span>;
     }
     case 'date':
-      return <span className="text-sm">{format(new Date(String(value)), 'd MMM yyyy')}</span>;
+      return <span className="text-sm">{format(new Date(String(value)), 'EEE d MMM yyyy')}</span>;
     default:
       return <RichText text={String(value)} />;
   }

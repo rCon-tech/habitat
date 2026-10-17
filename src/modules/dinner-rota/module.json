@@ -1,0 +1,112 @@
+{
+  "manifest": {
+    "id": "dinner-rota",
+    "name": "Dinner Rota",
+    "tagline": "Who's cooking, and when",
+    "description": "Put a name against each night so nobody has to ask what's for dinner or whose turn it is.",
+    "icon": "utensils",
+    "category": "plans",
+    "version": 1,
+    "nav": {
+      "label": "Dinners",
+      "order": 18
+    },
+    "collections": {
+      "meal": {
+        "fields": {
+          "date": {
+            "type": "date",
+            "required": true
+          },
+          "cook": {
+            "type": "member",
+            "required": true
+          },
+          "dish": {
+            "type": "text",
+            "max": 100
+          }
+        },
+        "permissions": {
+          "update": "member",
+          "delete": "author-or-admin"
+        }
+      }
+    }
+  },
+  "views": {
+    "main": {
+      "type": "stack",
+      "children": [
+        {
+          "type": "form",
+          "collection": "meal",
+          "title": "Put a night on the rota",
+          "submitLabel": "Add",
+          "fields": ["date", "cook", "dish"]
+        },
+        {
+          "type": "tabs",
+          "tabs": [
+            {
+              "label": "Coming up",
+              "view": {
+                "type": "list",
+                "collection": "meal",
+                "order": "date:asc",
+                "filter": {
+                  "field": "date",
+                  "op": "gte",
+                  "value": "$today"
+                },
+                "empty": "No dinners planned. Who's cooking?",
+                "cells": [
+                  {
+                    "field": "date",
+                    "as": "date"
+                  },
+                  {
+                    "field": "cook",
+                    "as": "member"
+                  },
+                  {
+                    "field": "dish",
+                    "as": "title"
+                  }
+                ]
+              }
+            },
+            {
+              "label": "Past",
+              "view": {
+                "type": "list",
+                "collection": "meal",
+                "order": "date:desc",
+                "filter": {
+                  "field": "date",
+                  "op": "lt",
+                  "value": "$today"
+                },
+                "empty": "Nothing yet.",
+                "cells": [
+                  {
+                    "field": "date",
+                    "as": "date"
+                  },
+                  {
+                    "field": "cook",
+                    "as": "member"
+                  },
+                  {
+                    "field": "dish",
+                    "as": "title"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

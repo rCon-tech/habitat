@@ -24,7 +24,7 @@ Headings: **Bricolage Grotesque** (variable, set narrow and tight). Body: **Inst
 ## Shape language
 
 - **Pill** (`rounded-full`) for buttons, tabs and chips. **Soft slab** (`rounded-[1.75rem]`) for cards.
-- **Doorway** (`rounded-t-full rounded-b-2xl`) for emblems and module icons: the Habitat emoji, the library tiles.
+- **Doorway** (`rounded-t-full rounded-b-2xl`) for emblems and module icons: the Habitat emoji, the widget tiles.
 - **Squircle avatars**, each person tinted a steady colour of their own.
 
 ## The logo

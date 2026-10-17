@@ -1,0 +1,88 @@
+{
+  "manifest": {
+    "id": "quote-wall",
+    "name": "Quote Wall",
+    "tagline": "Things you said (and shouldn't have)",
+    "description": "Save the funniest things anyone in the group has said, with who said it. React, comment, and bring them up for years.",
+    "icon": "quote",
+    "category": "social",
+    "version": 1,
+    "nav": {
+      "label": "Quotes",
+      "order": 20
+    },
+    "collections": {
+      "quote": {
+        "fields": {
+          "text": {
+            "type": "longtext",
+            "max": 280,
+            "required": true
+          },
+          "saidBy": {
+            "type": "member",
+            "required": true
+          },
+          "context": {
+            "type": "text",
+            "max": 100
+          }
+        },
+        "showInTimeline": true,
+        "permissions": {
+          "update": "author",
+          "delete": "author-or-admin"
+        }
+      }
+    }
+  },
+  "views": {
+    "main": {
+      "type": "stack",
+      "children": [
+        {
+          "type": "form",
+          "collection": "quote",
+          "title": "Add a quote",
+          "submitLabel": "Add to the wall",
+          "fields": ["text", "saidBy", "context"]
+        },
+        {
+          "type": "list",
+          "collection": "quote",
+          "empty": "Nobody has said anything memorable. Yet.",
+          "cells": [
+            {
+              "field": "text",
+              "as": "quote"
+            },
+            {
+              "field": "saidBy",
+              "as": "member"
+            },
+            {
+              "field": "context",
+              "as": "muted"
+            }
+          ]
+        }
+      ]
+    },
+    "card": {
+      "cells": [
+        {
+          "field": "text",
+          "as": "quote"
+        },
+        {
+          "field": "saidBy",
+          "as": "member"
+        },
+        {
+          "field": "context",
+          "as": "muted"
+        }
+      ]
+    }
+  }
+}

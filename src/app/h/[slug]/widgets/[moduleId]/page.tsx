@@ -22,7 +22,7 @@ export default async function ModuleDetail({
   const { slug, moduleId } = await params;
   const manifest = getManifest(moduleId);
   if (!manifest) notFound();
-  const user = await requireUser({ next: `/h/${slug}/library/${moduleId}` });
+  const user = await requireUser({ next: `/h/${slug}/widgets/${moduleId}` });
   const { ctx } = await requireMemberBySlug(getDb(), slug, user.id);
   const installed = (await listActive(getDb(), ctx.habitatId)).some(
     (a) => a.manifest.id === moduleId,
@@ -32,10 +32,10 @@ export default async function ModuleDetail({
   return (
     <div className="mx-auto max-w-2xl space-y-5">
       <Link
-        href={`/h/${slug}/library`}
+        href={`/h/${slug}/widgets`}
         className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-ink"
       >
-        <ArrowLeft size={14} /> Library
+        <ArrowLeft size={14} /> Widgets
       </Link>
       <div className="flex items-start gap-4">
         <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-accent/15 text-link">

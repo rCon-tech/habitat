@@ -23,6 +23,16 @@ const nextConfig: NextConfig = {
   // Don't let `next dev` write an AGENTS.md into the repo.
   agentRules: false,
   turbopack: { root: import.meta.dirname },
+  // "Library" became "Widgets": keep old links and bookmarks working.
+  async redirects() {
+    return [
+      {
+        source: '/h/:slug/library/:path*',
+        destination: '/h/:slug/widgets/:path*',
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {

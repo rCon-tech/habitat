@@ -9,8 +9,7 @@ import { manifest as birthdays } from './birthdays/manifest';
 import { manifest as recommendations } from './recommendations/manifest';
 import { manifest as wishlist } from './wishlist/manifest';
 import { manifest as splitCosts } from './split-costs/manifest';
-import { loadMdl } from './declarative/load';
-import bucketListDoc from './bucket-list/module.json';
+import { declarativeModules } from './declarative/catalog';
 
 /** Server-safe: manifests only, no React. The UI registry lives in `ui-registry.ts`. */
 const BUILT_IN: unknown[] = [
@@ -23,7 +22,7 @@ const BUILT_IN: unknown[] = [
   recommendations,
   wishlist,
   splitCosts,
-  loadMdl(bucketListDoc).manifest,
+  ...declarativeModules.map((m) => m.manifest),
 ];
 
 const byId = new Map<string, ModuleManifest>();
@@ -37,14 +36,14 @@ export function getManifest(id: string): ModuleManifest | undefined {
 }
 
 /** Every module a Habitat can choose from, defaults first. */
-export function listLibrary(): ModuleManifest[] {
+export function listWidgets(): ModuleManifest[] {
   return [...byId.values()].sort(
     (a, b) => Number(!!b.isDefault) - Number(!!a.isDefault) || a.name.localeCompare(b.name),
   );
 }
 
 export function defaultModuleIds(): string[] {
-  return listLibrary()
+  return listWidgets()
     .filter((m) => m.isDefault)
     .map((m) => m.id);
 }

@@ -56,7 +56,7 @@ function Landing() {
     {
       n: '02',
       title: 'Built from pieces',
-      text: 'Start with a feed, photos, events and chat. Add polls, birthdays, shared costs and more from the library, or have one made for you.',
+      text: 'Start with a feed, photos, events and chat. Add polls, birthdays, shared costs and more from the widgets, or have one made for you.',
     },
     {
       n: '03',

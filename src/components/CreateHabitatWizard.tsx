@@ -17,7 +17,7 @@ export interface StarterModule {
   tagline: string;
   icon: string;
 }
-export interface LibraryTeaser {
+export interface WidgetTeaser {
   name: string;
   tagline: string;
 }
@@ -46,7 +46,7 @@ export function CreateHabitatWizard({
   later,
 }: {
   starters: StarterModule[];
-  later: LibraryTeaser[];
+  later: WidgetTeaser[];
 }) {
   const router = useRouter();
   const [step, setStep] = useState(0);
