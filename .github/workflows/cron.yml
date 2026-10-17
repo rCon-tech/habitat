@@ -1,0 +1,52 @@
+name: Scheduled jobs
+
+# Vercel's free plan only allows daily crons, so these run from GitHub Actions instead.
+# Each job calls an endpoint that checks `Authorization: Bearer $CRON_SECRET`.
+# Needs two repository secrets: APP_URL (e.g. https://habitat-abc.vercel.app, no trailing slash) and CRON_SECRET.
+# GitHub may delay scheduled runs by a few minutes, and pauses them after 60 days without repo activity.
+
+on:
+  schedule:
+    - cron: '*/15 * * * *' # close finished votes, email vote notices
+    - cron: '5 * * * *' # event and birthday reminders
+    - cron: '0 8 * * 1' # weekly digest, Mondays
+    - cron: '30 3 * * *' # purge removed modules and abandoned uploads
+  workflow_dispatch:
+    inputs:
+      job:
+        description: Job to run now
+        type: choice
+        options: [proposals, reminders, digest, purge]
+        default: proposals
+
+concurrency:
+  group: habitat-cron-${{ github.event.schedule || inputs.job }}
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Call the job
+        env:
+          APP_URL: ${{ secrets.APP_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          SCHEDULE: ${{ github.event.schedule }}
+          MANUAL: ${{ inputs.job }}
+        run: |
+          if [ -z "$APP_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "APP_URL and CRON_SECRET secrets are not set yet; skipping."
+            exit 0
+          fi
+          case "$SCHEDULE" in
+            '*/15 * * * *') job=proposals ;;
+            '5 * * * *')    job=reminders ;;
+            '0 8 * * 1')    job=digest ;;
+            '30 3 * * *')   job=purge ;;
+            *)              job="$MANUAL" ;;
+          esac
+          echo "Running $job"
+          curl --fail --silent --show-error --max-time 120 \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            "$APP_URL/api/cron/$job"

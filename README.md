@@ -53,7 +53,7 @@ Highlights: voting and invite races (6 simultaneous yes votes install a module o
 
 ## Deploy
 
-1. Neon project → pooled URL in `DATABASE_URL`. 2. R2 bucket (private; CORS allows `PUT` from your URL) and API token. 3. Optional Ably app. 4. Resend domain. 5. Vercel: import the repo, set the variables from `.env.example` (production needs `EMAIL_TRANSPORT=resend` and `CRON_SECRET`), add the Google callback `/api/auth/callback/google`. Migrations run on production deploys via `vercel-build`; `vercel.json` schedules the four cron jobs.
+1. Neon project → pooled URL in `DATABASE_URL`. 2. R2 bucket (private; CORS allows `PUT` from your URL) and API token. 3. Optional Ably app. 4. Resend domain. 5. Vercel: import the repo, set the variables from `.env.example` (production needs `EMAIL_TRANSPORT=resend` and `CRON_SECRET`), add the Google callback `/api/auth/callback/google`. Migrations run on production deploys via `vercel-build`; The four scheduled jobs (close votes, reminders, weekly digest, cleanup) run from `.github/workflows/cron.yml` because Vercel's free plan only allows daily crons. Add repository secrets `APP_URL` and `CRON_SECRET` (the same value as in Vercel). On Vercel Pro you can use native crons instead.
 
 ## How it differs from PLAN.md
 
